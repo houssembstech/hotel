@@ -12,9 +12,14 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/health', (req, res) => {
+import uploadRoutes from './routes/upload';
+
+app.use('/api/health', (req, res) => {
   res.json({ status: 'API is running' });
 });
+
+// Register Cloudinary Upload API
+app.use('/api/upload', uploadRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
