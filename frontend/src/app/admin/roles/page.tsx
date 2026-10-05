@@ -33,11 +33,11 @@ export default function AdminRolesPage() {
     <div>
       <div className="flex justify-between items-center mb-10 pt-4">
         <div>
-          <h1 className="text-3xl font-serif text-white mb-2">Staff & Roles Management</h1>
-          <p className="text-slate-400">Create Director accounts and manage high-level permissions.</p>
+          <h1 className="text-3xl font-serif text-white mb-2">Global Staff Audit</h1>
+          <p className="text-slate-400">Directory of all hotel personnel (Director, Reception, etc.) and security management.</p>
         </div>
         <button onClick={() => setShowModal(true)} className="bg-[#D4AF37] hover:bg-[#B5952F] text-slate-950 px-6 py-3 rounded-xl font-bold transition-all shadow-lg">
-          + New Director/Staff
+          + Add Staff Member
         </button>
       </div>
 

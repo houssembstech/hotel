@@ -17,10 +17,9 @@ export default function DashboardSidebar({ role }: { role: string }) {
 
   if (role === 'SUPER_ADMIN') {
     links = [
-      { name: 'Overview', path: '/admin', icon: '📊' },
-      { name: 'Multi-Hotels', path: '/admin/hotels', icon: '🏨' },
-      { name: 'Roles & Staff', path: '/admin/roles', icon: '👥' },
-      { name: 'System Logs', path: '/admin/logs', icon: '⚙️' },
+      { name: 'Financial Overview', path: '/admin', icon: '💰' },
+      { name: 'Director & Staff', path: '/admin/roles', icon: '👥' },
+      { name: 'Audit & System Logs', path: '/admin/logs', icon: '⚙️' },
     ];
   } else if (role === 'DIRECTOR') {
     links = [
