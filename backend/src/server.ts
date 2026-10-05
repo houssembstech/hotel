@@ -13,13 +13,15 @@ app.use(cors());
 app.use(express.json());
 
 import uploadRoutes from './routes/upload';
+import authRoutes from './routes/auth';
 
 app.use('/api/health', (req, res) => {
   res.json({ status: 'API is running' });
 });
 
-// Register Cloudinary Upload API
+// Register API Routes
 app.use('/api/upload', uploadRoutes);
+app.use('/api/auth', authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

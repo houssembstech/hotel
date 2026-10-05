@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
@@ -26,12 +27,12 @@ export default function RootLayout({
                 <span className="font-serif text-2xl font-bold text-gold-400 text-[#D4AF37]">Lumina</span>
               </div>
               <div className="hidden md:flex items-center space-x-8">
-                <a href="#rooms" className="text-slate-300 hover:text-white transition-colors">Our Suites</a>
-                <a href="#dining" className="text-slate-300 hover:text-white transition-colors">Dining</a>
-                <a href="#spa" className="text-slate-300 hover:text-white transition-colors">Spa & Wellness</a>
-                <button className="bg-[#D4AF37] hover:bg-[#B5952F] text-slate-950 px-6 py-2 rounded-full font-medium transition-all transform hover:scale-105">
+                <Link href="/#rooms" className="text-slate-300 hover:text-white transition-colors">Our Suites</Link>
+                <Link href="/#dining" className="text-slate-300 hover:text-white transition-colors">Dining</Link>
+                <Link href="/#spa" className="text-slate-300 hover:text-white transition-colors">Spa & Wellness</Link>
+                <Link href="/book" className="bg-[#D4AF37] hover:bg-[#B5952F] text-slate-950 px-6 py-2 rounded-full font-medium transition-all transform hover:scale-105 inline-block">
                   Book Now
-                </button>
+                </Link>
               </div>
             </div>
           </div>
