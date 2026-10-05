@@ -30,6 +30,7 @@ export default function RootLayout({
                 <Link href="/#rooms" className="text-slate-300 hover:text-white transition-colors">Our Suites</Link>
                 <Link href="/#dining" className="text-slate-300 hover:text-white transition-colors">Dining</Link>
                 <Link href="/#spa" className="text-slate-300 hover:text-white transition-colors">Spa & Wellness</Link>
+                <Link href="/login" className="text-slate-300 hover:text-white transition-colors border-b border-transparent hover:border-white pb-1">Sign In</Link>
                 <Link href="/book" className="bg-[#D4AF37] hover:bg-[#B5952F] text-slate-950 px-6 py-2 rounded-full font-medium transition-all transform hover:scale-105 inline-block">
                   Book Now
                 </Link>
