@@ -23,10 +23,13 @@ export default function DashboardSidebar({ role }: { role: string }) {
     ];
   } else if (role === 'DIRECTOR') {
     links = [
-      { name: 'Analytics & KPIs', path: '/director', icon: '📈' },
-      { name: 'Room Inventory', path: '/director/rooms', icon: '🛏️' },
-      { name: 'Staff Schedule', path: '/director/staff', icon: '📅' },
-      { name: 'Pricing & Yield', path: '/director/pricing', icon: '💰' },
+      { name: 'Vue d\'Ensemble', path: '/director', icon: '📈' },
+      { name: 'Hébergement', path: '/director/rooms', icon: '🛏️' },
+      { name: 'Événementiel', path: '/director/events', icon: '🎭' },
+      { name: 'Restauration', path: '/director/dining', icon: '🍽️' },
+      { name: 'Services & Extras', path: '/director/services', icon: '🛎️' },
+      { name: 'Équipes & Staff', path: '/director/staff', icon: '👥' },
+      { name: 'Finances & Caisses', path: '/director/finance', icon: '💳' },
     ];
   } else if (role === 'RECEPTIONIST') {
     links = [
