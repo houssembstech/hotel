@@ -9,7 +9,7 @@ export default function DirectorStaffPage() {
   });
 
   const fetchUsers = () => {
-    fetch('http://localhost:5000/api/admin/users')
+    fetch('${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/admin/users')
       .then(res => res.json())
       .then(data => setUsers(data.filter((u:any) => u.role !== 'SUPER_ADMIN')));
   };
@@ -20,7 +20,7 @@ export default function DirectorStaffPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch('http://localhost:5000/api/admin/users', {
+    await fetch('${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/admin/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)

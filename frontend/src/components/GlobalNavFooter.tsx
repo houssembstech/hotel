@@ -9,6 +9,7 @@ export default function GlobalNavFooter({ children }: { children: React.ReactNod
                       pathname.startsWith('/director') || 
                       pathname.startsWith('/reception') || 
                       pathname.startsWith('/dashboard') || 
+                      pathname.startsWith('/resident') || 
                       pathname.startsWith('/login');
 
   if (isDashboard) {

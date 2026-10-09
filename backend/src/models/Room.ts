@@ -8,6 +8,7 @@ const roomSchema = new mongoose.Schema({
     enum: ['Standard', 'Deluxe', 'Suite'], 
     required: true 
   },
+  floor: { type: Number, default: 1 },
   pricePerNight: { type: Number, required: true },
   capacity: {
     adults: { type: Number, required: true },
@@ -17,8 +18,12 @@ const roomSchema = new mongoose.Schema({
   photos: [{ type: String }], // Cloudinary URLs
   status: {
     type: String,
-    enum: ['AVAILABLE', 'OCCUPIED', 'CLEANING', 'MAINTENANCE'],
+    enum: ['AVAILABLE', 'OCCUPIED', 'CLEANING', 'CLEANING_NEEDED', 'MAINTENANCE'],
     default: 'AVAILABLE'
+  },
+  currentLock: {
+    agentName: { type: String, default: null },
+    expiresAt: { type: Date, default: null }
   }
 }, { timestamps: true });
 

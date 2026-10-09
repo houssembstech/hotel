@@ -143,6 +143,55 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="reviews" className="py-24 bg-slate-900 border-t border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-5xl font-serif font-medium mb-4">L'Expérience Lumina</h2>
+          <p className="text-slate-400 max-w-2xl mx-auto mb-16">Découvrez les évaluations de nos résidents ayant partagé des moments inoubliables au sein de notre établissement.</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            {/* Review 1 */}
+            <div className="bg-slate-950/50 p-8 rounded-[2rem] border border-white/5 hover:border-[#D4AF37]/30 transition-all hover:-translate-y-2 group">
+               <div className="flex gap-1 mb-6 text-[#D4AF37] text-lg group-hover:drop-shadow-[0_0_10px_rgba(212,175,55,0.8)] transition-all">⭐⭐⭐⭐⭐</div>
+               <p className="text-slate-300 font-light leading-relaxed mb-8 italic">"Un service exceptionnel, de la conciergerie à la gastronomie. La Suite Présidentielle offre un panorama à couper le souffle. Nous reviendrons sans hésiter."</p>
+               <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-[#D4AF37]/20 rounded-full flex items-center justify-center text-[#D4AF37] font-serif font-bold text-lg border border-[#D4AF37]/30">MA</div>
+                  <div>
+                    <h4 className="text-white font-medium uppercase tracking-widest text-xs">M. Ben Ali</h4>
+                    <p className="text-slate-500 text-[10px] uppercase tracking-widest mt-1">Séjour en Octobre 2026</p>
+                  </div>
+               </div>
+            </div>
+
+            {/* Review 2 */}
+            <div className="bg-slate-950/50 p-8 rounded-[2rem] border border-[#D4AF37]/30 shadow-[0_0_30px_rgba(212,175,55,0.05)] hover:-translate-y-2 transition-all relative overflow-hidden group">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/5 rounded-full blur-[40px]"></div>
+               <div className="flex gap-1 mb-6 text-[#D4AF37] text-lg relative z-10 group-hover:drop-shadow-[0_0_10px_rgba(212,175,55,0.8)] transition-all">⭐⭐⭐⭐⭐</div>
+               <p className="text-slate-200 font-light leading-relaxed mb-8 italic relative z-10">"La PWA dédiée aux résidents est une merveille. Commander un Filet Wagyu depuis son bain et le voir s'ajouter directement sur le folio est le summum du confort."</p>
+               <div className="flex items-center gap-4 relative z-10">
+                  <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center text-white font-serif font-bold text-lg border border-white/10">SL</div>
+                  <div>
+                    <h4 className="text-white font-medium uppercase tracking-widest text-xs">Sophie L.</h4>
+                    <p className="text-slate-500 text-[10px] uppercase tracking-widest mt-1">Avis Vérifié • Suite Deluxe</p>
+                  </div>
+               </div>
+            </div>
+
+            {/* Review 3 */}
+            <div className="bg-slate-950/50 p-8 rounded-[2rem] border border-white/5 hover:border-[#D4AF37]/30 transition-all hover:-translate-y-2 group">
+               <div className="flex gap-1 mb-6 text-[#D4AF37] text-lg group-hover:drop-shadow-[0_0_10px_rgba(212,175,55,0.8)] transition-all">⭐⭐⭐⭐</div>
+               <p className="text-slate-300 font-light leading-relaxed mb-8 italic">"Le spa est un véritable sanctuaire. Les horaires flexibles et le personnel toujours à l'écoute rendent le séjour parfait du début à la fin."</p>
+               <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-indigo-500/20 rounded-full flex items-center justify-center text-indigo-400 font-serif font-bold text-lg border border-indigo-500/30">JD</div>
+                  <div>
+                    <h4 className="text-white font-medium uppercase tracking-widest text-xs">Jean D.</h4>
+                    <p className="text-slate-500 text-[10px] uppercase tracking-widest mt-1">Séjour en Septembre 2026</p>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="spa" className="py-24 bg-slate-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-serif font-medium mb-6">Tranquil Wellness Spa</h2>

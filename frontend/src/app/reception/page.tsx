@@ -1,146 +1,109 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function ReceptionDashboardPage() {
-  const [activeTab, setActiveTab] = useState<'ARRIVALS' | 'DEPARTURES'>('ARRIVALS');
+export default function ReceptionRackPage() {
+  const [rooms, setRooms] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/rooms')
+      .then(res => res.json())
+      .then(data => setRooms(data));
+  }, []);
+
+  const getStatusColor = (status: string) => {
+    switch(status) {
+      case 'AVAILABLE': return 'bg-emerald-500';
+      case 'OCCUPIED': return 'bg-amber-500';
+      case 'CLEANING_NEEDED': return 'bg-red-500';
+      case 'MAINTENANCE': return 'bg-slate-700';
+      default: return 'bg-slate-500';
+    }
+  };
+  
+  const getStatusText = (status: string) => {
+    switch(status) {
+      case 'AVAILABLE': return 'Libre & Propre';
+      case 'OCCUPIED': return 'Occupée';
+      case 'CLEANING_NEEDED': return 'Sale / À Nettoyer';
+      case 'MAINTENANCE': return 'Hors Service';
+      default: return status;
+    }
+  };
+
+  const groupedRooms = rooms.reduce((acc, room) => {
+    const floor = room.floor || 1;
+    const type = room.type || 'Standard';
+    if (!acc[floor]) acc[floor] = {};
+    if (!acc[floor][type]) acc[floor][type] = [];
+    acc[floor][type].push(room);
+    return acc;
+  }, {} as Record<string, Record<string, any[]>>);
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-10 pt-4">
+      <div className="flex justify-between items-end mb-10 pt-4">
         <div>
-          <h1 className="text-3xl font-serif text-white mb-2">Front Desk Operations</h1>
-          <p className="text-slate-400">Manage today's check-ins, check-outs, and quick actions.</p>
+          <h1 className="text-3xl font-serif text-white mb-2">Rack de Chambres</h1>
+          <p className="text-slate-400">Suivi en temps réel interactif de l'inventaire hébergement.</p>
         </div>
-        <div className="flex gap-4">
-          <button className="bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition-all shadow-lg flex items-center gap-2">
-            <span>+</span> New Walk-in
-          </button>
-        </div>
-      </div>
-
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-        <div className="glass-card p-6 border border-sky-500/30 rounded-2xl">
-          <p className="text-slate-400 text-sm font-medium mb-1">Expected Arrivals</p>
-          <div className="flex items-end justify-between">
-            <h2 className="text-4xl font-serif text-white">12</h2>
-            <span className="text-sky-400 bg-sky-500/10 px-2 py-1 rounded text-xs font-bold">Today</span>
-          </div>
-        </div>
-        <div className="glass-card p-6 border border-amber-500/30 rounded-2xl">
-          <p className="text-slate-400 text-sm font-medium mb-1">Pending Departures</p>
-          <div className="flex items-end justify-between">
-            <h2 className="text-4xl font-serif text-white">8</h2>
-            <span className="text-amber-400 bg-amber-500/10 px-2 py-1 rounded text-xs font-bold">11:00 AM</span>
-          </div>
-        </div>
-        <div className="glass-card p-6 border border-emerald-500/30 rounded-2xl">
-          <p className="text-slate-400 text-sm font-medium mb-1">In-House Guests</p>
-          <div className="flex items-end justify-between">
-            <h2 className="text-4xl font-serif text-white">45</h2>
-            <span className="text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded text-xs font-bold">Live</span>
-          </div>
-        </div>
-        <div className="glass-card p-6 border border-purple-500/30 rounded-2xl">
-          <p className="text-slate-400 text-sm font-medium mb-1">Available Rooms</p>
-          <div className="flex items-end justify-between">
-            <h2 className="text-4xl font-serif text-white">5</h2>
-            <span className="text-purple-400 bg-purple-500/10 px-2 py-1 rounded text-xs font-bold">Clean</span>
-          </div>
+        <div className="text-right">
+           <p className="text-sm text-slate-400 mb-1">Occupation Actuelle</p>
+           <p className="text-3xl text-white font-bold">{Math.round((rooms.filter(r => r.status === 'OCCUPIED').length / (rooms.length || 1)) * 100)} %</p>
         </div>
       </div>
 
-      {/* Action Area: Arrivals vs Departures */}
-      <div className="glass-card rounded-2xl border border-slate-800 overflow-hidden">
-        <div className="flex border-b border-slate-800">
-          <button 
-            onClick={() => setActiveTab('ARRIVALS')}
-            className={`flex-1 py-4 text-center font-medium transition-colors ${activeTab === 'ARRIVALS' ? 'bg-slate-800 text-sky-400 border-b-2 border-sky-400' : 'text-slate-400 hover:bg-slate-900'}`}
-          >
-            Check-Ins (Arrivals)
-          </button>
-          <button 
-            onClick={() => setActiveTab('DEPARTURES')}
-            className={`flex-1 py-4 text-center font-medium transition-colors ${activeTab === 'DEPARTURES' ? 'bg-slate-800 text-amber-400 border-b-2 border-amber-400' : 'text-slate-400 hover:bg-slate-900'}`}
-          >
-            Check-Outs (Departures)
-          </button>
-        </div>
-        
-        <div className="p-6">
-          <div className="mb-6 flex gap-4">
-            <input 
-              type="text" 
-              placeholder="Search by guest name or booking ID..." 
-              className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition-colors"
-            />
-            <button className="bg-slate-800 border border-slate-700 text-white px-6 py-3 rounded-xl hover:bg-slate-700 transition-all">
-              Filter
-            </button>
-          </div>
-
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="text-slate-400 border-b border-slate-800 text-sm">
-                <th className="font-medium pb-4 pl-4">Guest Name</th>
-                <th className="font-medium pb-4">Booking Ref</th>
-                <th className="font-medium pb-4">Room Type</th>
-                <th className="font-medium pb-4">Status</th>
-                <th className="font-medium pb-4 text-right pr-4">Action</th>
-              </tr>
-            </thead>
-            <tbody className="text-slate-200">
-              {activeTab === 'ARRIVALS' ? (
-                <>
-                  <tr className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
-                    <td className="py-4 pl-4 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center font-bold text-xs">JD</div>
-                      John Doe
-                    </td>
-                    <td className="py-4 font-mono text-sm text-slate-400">#RES-8894</td>
-                    <td className="py-4">Oceanfront Deluxe</td>
-                    <td className="py-4"><span className="bg-slate-800 text-slate-300 px-2 py-1 rounded text-xs font-medium border border-slate-700">Not arrived</span></td>
-                    <td className="py-4 text-right pr-4">
-                      <button className="bg-sky-500/20 text-sky-400 border border-sky-500/50 hover:bg-sky-500/50 px-4 py-2 rounded-lg text-sm transition-all font-medium">
-                        Perform Check-in
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
-                    <td className="py-4 pl-4 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">SA</div>
-                      Sarah Ahmed
-                    </td>
-                    <td className="py-4 font-mono text-sm text-slate-400">#RES-2301</td>
-                    <td className="py-4">Executive Suite</td>
-                    <td className="py-4"><span className="bg-emerald-900/50 text-emerald-400 px-2 py-1 rounded text-xs font-medium border border-emerald-800">Checked In</span></td>
-                    <td className="py-4 text-right pr-4">
-                      <button className="bg-slate-800 text-slate-400 px-4 py-2 rounded-lg text-sm transition-all font-medium cursor-not-allowed" disabled>
-                        Done
-                      </button>
-                    </td>
-                  </tr>
-                </>
-              ) : (
-                <tr className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
-                  <td className="py-4 pl-4 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">ML</div>
-                    Marie Laurent
-                  </td>
-                  <td className="py-4 font-mono text-sm text-slate-400">#RES-1044</td>
-                  <td className="py-4">Standard Room (304)</td>
-                  <td className="py-4"><span className="bg-amber-900/50 text-amber-400 px-2 py-1 rounded text-xs font-medium border border-amber-800">Balance USD 45</span></td>
-                  <td className="py-4 text-right pr-4">
-                    <button className="bg-amber-500 hover:bg-amber-400 text-slate-900 px-4 py-2 rounded-lg text-sm transition-all font-bold">
-                      Settle & Check-out
-                    </button>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+      <div className="flex flex-wrap gap-4 mb-8">
+         <div className="flex items-center gap-2 text-sm text-slate-400"><div className="w-3 h-3 rounded bg-emerald-500"></div> Libre & Propre</div>
+         <div className="flex items-center gap-2 text-sm text-slate-400"><div className="w-3 h-3 rounded bg-amber-500"></div> Occupée (Résident)</div>
+         <div className="flex items-center gap-2 text-sm text-slate-400"><div className="w-3 h-3 rounded bg-red-500"></div> En Nettoyage / Départ</div>
+         <div className="flex items-center gap-2 text-sm text-slate-400"><div className="w-3 h-3 rounded bg-slate-700"></div> Maintenance</div>
       </div>
+
+      {rooms.length === 0 ? (
+        <div className="py-10 text-center text-slate-500">Aucune chambre dans l'inventaire logiciel.</div>
+      ) : (
+        Object.keys(groupedRooms).sort().map(floor => (
+          <div key={floor} className="mb-12">
+            <h2 className="text-2xl font-serif text-white mb-6 border-b border-slate-800 pb-2">
+              Étage {floor}
+            </h2>
+            
+            {Object.keys(groupedRooms[floor as any]).sort().map(type => (
+               <div key={type} className="mb-6 glass-card rounded-xl border border-slate-800 p-4">
+                 <h3 className="text-md text-[#D4AF37] mb-4 pl-2 border-l-2 border-[#D4AF37] font-bold uppercase tracking-widest">{type}</h3>
+                 
+                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                   {groupedRooms[floor as any][type].map((room: any) => (
+                      <div key={room._id} className="bg-slate-900 border border-slate-700 rounded-xl p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:border-white transition-all relative group shadow-lg">
+                         
+                         {/* Dynamic Soft Locking */}
+                         {room.status === 'AVAILABLE' && room.currentLock?.agentName && new Date(room.currentLock.expiresAt) > new Date() && (
+                            <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-sm rounded-xl flex items-center justify-center z-10 border border-sky-500 p-2">
+                              <span className="text-[10px] text-sky-400 text-center font-medium leading-tight">En cours de traitement par {room.currentLock.agentName}</span>
+                            </div>
+                         )}
+                         
+                         <h3 className="text-xl font-bold text-white tracking-widest">Chambre {room.roomNumber}</h3>
+                         <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-3">{room.type}</p>
+                         
+                         <div className={`px-2 py-1 rounded text-[10px] font-bold text-slate-950 uppercase tracking-wider w-full ${getStatusColor(room.status)}`}>
+                            {getStatusText(room.status)}
+                         </div>
+                         
+                         {/* Guest name snippet (faked for UI) */}
+                         {room.status === 'OCCUPIED' && (
+                           <div className="mt-3 text-xs text-slate-300 bg-slate-800 px-2 py-1 rounded w-full border border-slate-700">
+                             Mr. Anderson (2 nuits)
+                           </div>
+                         )}
+                      </div>
+                   ))}
+                 </div>
+               </div>
+            ))}
+          </div>
+        ))
+      )}
     </div>
   );
 }

@@ -39,16 +39,19 @@ router.post('/login', async (req, res): Promise<any> => {
   try {
     const { email, password } = req.body;
 
-    // Find user
-    const user = await User.findOne({ email });
+    // Find user by email OR idNumber (since the field on frontend might be labeled identifiant or email)
+    const user = await User.findOne({ 
+      $or: [ { email: email }, { idNumber: email } ] 
+    });
+    
     if (!user) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      return res.status(400).json({ error: 'Identifiant invalide' });
     }
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, user.passwordHash as string);
     if (!isMatch) {
-      return res.status(400).json({ error: 'Invalid credentials' });
+      return res.status(400).json({ error: 'Mot de passe incorrect' });
     }
 
     // Generate JWT specific to the role
@@ -69,13 +72,33 @@ router.post('/login', async (req, res): Promise<any> => {
       user: {
         id: user._id,
         name: user.name,
-        email: user.email,
-        role: user.role
+        role: user.role,
+        needsPasswordChange: user.needsPasswordChange || false
       }
     });
   } catch (error) {
     res.status(500).json({ error: 'Server error during login' });
   }
+});
+
+// POST /api/auth/change-password (For first-time guest login)
+router.post('/change-password', async (req, res): Promise<any> => {
+   try {
+      const { userId, newPassword } = req.body;
+      const user = await User.findById(userId);
+      if (!user) return res.status(404).json({ error: 'User not found' });
+      
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(newPassword, salt);
+      
+      user.passwordHash = passwordHash;
+      user.needsPasswordChange = false;
+      await user.save();
+      
+      res.json({ success: true, message: 'Mot de passe mis à jour avec succès' });
+   } catch (error) {
+      res.status(500).json({ error: 'Server error during password update' });
+   }
 });
 
 export default router;
